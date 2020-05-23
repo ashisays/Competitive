@@ -13,6 +13,12 @@ Output format
 For each test case, print the required answer in a new line.
 """
 def solve (n):
+    """this question is of pattern finding .
+    calculate output for several values of n .
+    by observation : you will see that if n is power of 2 answer is n itself otherwise
+    answer :(n-( power of 2 just smaller than n ) )*2
+    eg for n=11 , power of 2 just smaller than 11 is 8 ans : ( 11 -8 ) *2 = 6
+    """
     print("***************************************** : [%s]"%n)
     res = 1
     # Write your code here
