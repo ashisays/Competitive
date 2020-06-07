@@ -112,6 +112,71 @@ func InsertNode(treeNode **TreeNode, key KeyValue) {
 	*treeNode, _ = insertRNode(*treeNode, key)
 }
 
+// RemoveNode method
+func RemoveNode(treeNode **TreeNode, key KeyValue) {
+	*treeNode, _ = removeRNode(*treeNode, key)
+}
+
+// removeBalance method
+func removeBalance(rootNode *TreeNode, nodeValue int) (*TreeNode, bool) {
+	var node *TreeNode
+	node = rootNode.LinkedNodes[opposite(nodeValue)]
+	var balance int
+	balance = 2*nodeValue - 1
+	switch node.BalanceValue {
+	case -balance:
+		rootNode.BalanceValue = 0
+		node.BalanceValue = 0
+		return singleRotation(rootNode, nodeValue), false
+	case balance:
+		adjustBalance(rootNode, opposite(nodeValue), -balance)
+		return doubleRotation(rootNode, nodeValue), false
+	}
+	rootNode.BalanceValue = -balance
+	node.BalanceValue = balance
+	return singleRotation(rootNode, nodeValue), true
+}
+
+//removeRNode method
+func removeRNode(rootNode *TreeNode, key KeyValue) (*TreeNode, bool) {
+	if rootNode == nil {
+		return nil, false
+	}
+	if rootNode.KeyValue.EqualTo(key) {
+		switch {
+		case rootNode.LinkedNodes[0] == nil:
+			return rootNode.LinkedNodes[1], false
+		case rootNode.LinkedNodes[1] == nil:
+			return rootNode.LinkedNodes[0], false
+		}
+		var heirNode *TreeNode
+		heirNode = rootNode.LinkedNodes[0]
+		for heirNode.LinkedNodes[1] != nil {
+			heirNode = heirNode.LinkedNodes[1]
+		}
+		rootNode.KeyValue = heirNode.KeyValue
+		key = heirNode.KeyValue
+	}
+	var dir int
+	dir = 0
+	if rootNode.KeyValue.LessThan(key) {
+		dir = 1
+	}
+	var done bool
+	rootNode.LinkedNodes[dir], done = removeRNode(rootNode.LinkedNodes[dir], key)
+	if done {
+		return rootNode, true
+	}
+	rootNode.BalanceValue = rootNode.BalanceValue + (1 - 2*dir)
+	switch rootNode.BalanceValue {
+	case 1, -1:
+		return rootNode, true
+	case 0:
+		return rootNode, false
+	}
+	return removeBalance(rootNode, dir)
+}
+
 type integerKey int
 
 func (k integerKey) LessThan(k1 KeyValue) bool {
@@ -138,8 +203,8 @@ func main() {
 	avlTree, _ = json.MarshalIndent(treeNode, "", " ")
 	fmt.Println(string(avlTree))
 	fmt.Println("\n Delete Tree")
-	//RemoveNode(&treeNode, integerKey(3))
-	//RemoveNode(&treeNode, integerKey(7))
+	RemoveNode(&treeNode, integerKey(3))
+	RemoveNode(&treeNode, integerKey(7))
 	avlTree, _ = json.MarshalIndent(treeNode, "", " ")
 	fmt.Println(string(avlTree))
 }
