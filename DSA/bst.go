@@ -3,60 +3,58 @@ package main
 import (
 	"fmt"
 	"sync"
-	)
+)
 
 // TreeNode class
-type TreeNode struct {
-	key int
-	value int
-	leftNode *TreeNode
-	rightNode *TreeNode
+type BSTTreeNode struct {
+	key       int
+	value     int
+	leftNode  *BSTTreeNode
+	rightNode *BSTTreeNode
 }
 
 // BinarySearchTree class
 type BinarySearchTree struct {
-	rootNode *TreeNode
-	lock sync.RWMutex
+	rootNode *BSTTreeNode
+	lock     sync.RWMutex
 }
 
-
-func (tree *BinarySearchTree) InsertElement (key int , val int) {
+func (tree *BinarySearchTree) InsertElement(key int, val int) {
 	tree.lock.Lock()
-	defer  tree.lock.Unlock()
-	var treeNode *TreeNode
-	treeNode = &TreeNode{key, val, nil, nil}
-	if tree.rootNode == nil{
+	defer tree.lock.Unlock()
+	var treeNode *BSTTreeNode
+	treeNode = &BSTTreeNode{key, val, nil, nil}
+	if tree.rootNode == nil {
 		tree.rootNode = treeNode
 	} else {
-		insertTreeNode(tree.rootNode,treeNode)
+		insertTreeNode(tree.rootNode, treeNode)
 	}
 }
 
-func insertTreeNode(rootNode *TreeNode,newTreeNode *TreeNode) {
-	if newTreeNode.key < rootNode.key{
+func insertTreeNode(rootNode *BSTTreeNode, newTreeNode *BSTTreeNode) {
+	if newTreeNode.key < rootNode.key {
 		if rootNode.leftNode == nil {
 			rootNode.leftNode = newTreeNode
 		} else {
-			insertTreeNode(rootNode.leftNode,newTreeNode)
+			insertTreeNode(rootNode.leftNode, newTreeNode)
 		}
 	} else {
 		if rootNode.rightNode == nil {
 			rootNode.rightNode = newTreeNode
 		} else {
-			insertTreeNode(rootNode.rightNode,newTreeNode)
+			insertTreeNode(rootNode.rightNode, newTreeNode)
 		}
 	}
 }
 
-
 // MinNode method
 func (tree *BinarySearchTree) MinNode() *int {
 	tree.lock.Lock()
-	defer  tree.lock.Unlock()
-	var treeNode *TreeNode
+	defer tree.lock.Unlock()
+	var treeNode *BSTTreeNode
 	treeNode = tree.rootNode
 	if treeNode == nil {
-		return (*int) (nil)
+		return (*int)(nil)
 	}
 	for {
 		if treeNode.leftNode == nil {
@@ -66,12 +64,11 @@ func (tree *BinarySearchTree) MinNode() *int {
 	}
 }
 
-
 // MaxNode method
 func (tree *BinarySearchTree) MaxNode() *int {
 	tree.lock.RLock()
 	defer tree.lock.RUnlock()
-	var treeNode *TreeNode
+	var treeNode *BSTTreeNode
 	treeNode = tree.rootNode
 	if treeNode == nil {
 		//nil instead of 0
@@ -93,7 +90,7 @@ func (tree *BinarySearchTree) SearchNode(key int) bool {
 }
 
 // searchNode method
-func searchNode(treeNode *TreeNode, key int) bool {
+func searchNode(treeNode *BSTTreeNode, key int) bool {
 	if treeNode == nil {
 		return false
 	}
@@ -115,7 +112,7 @@ func (tree *BinarySearchTree) RemoveNode(key int) {
 
 // removeNode method
 // removeNode method
-func removeNode(treeNode *TreeNode, key int) *TreeNode {
+func removeNode(treeNode *BSTTreeNode, key int) *BSTTreeNode {
 	if treeNode == nil {
 		return nil
 	}
@@ -140,7 +137,7 @@ func removeNode(treeNode *TreeNode, key int) *TreeNode {
 		treeNode = treeNode.leftNode
 		return treeNode
 	}
-	var leftmostrightNode *TreeNode
+	var leftmostrightNode *BSTTreeNode
 	leftmostrightNode = treeNode.rightNode
 	for {
 		//find smallest value on the right side
@@ -150,9 +147,9 @@ func removeNode(treeNode *TreeNode, key int) *TreeNode {
 			break
 		}
 	}
-	treeNode.key , treeNode.value = leftmostrightNode.key , leftmostrightNode.value
-	treeNode.rightNode = removeNode(treeNode.rightNode,treeNode.key)
-	return  treeNode
+	treeNode.key, treeNode.value = leftmostrightNode.key, leftmostrightNode.value
+	treeNode.rightNode = removeNode(treeNode.rightNode, treeNode.key)
+	return treeNode
 }
 
 // InOrderTraverseTree method
@@ -162,11 +159,11 @@ func (tree *BinarySearchTree) InOrderTraverseTree(function func(int)) {
 	inOrderTraverseTree(tree.rootNode, function)
 }
 
-func inOrderTraverseTree(treeNode *TreeNode, function func(int)) {
+func inOrderTraverseTree(treeNode *BSTTreeNode, function func(int)) {
 	if treeNode != nil {
-		inOrderTraverseTree(treeNode.leftNode,function)
+		inOrderTraverseTree(treeNode.leftNode, function)
 		function(treeNode.value)
-		inOrderTraverseTree(treeNode.rightNode,function)
+		inOrderTraverseTree(treeNode.rightNode, function)
 	}
 }
 
@@ -177,14 +174,13 @@ func (tree *BinarySearchTree) PreOrderTraverseTree(function func(int)) {
 	preOrderTraverseTree(tree.rootNode, function)
 }
 
-func preOrderTraverseTree(treeNode *TreeNode, function func(int)) {
+func preOrderTraverseTree(treeNode *BSTTreeNode, function func(int)) {
 	if treeNode != nil {
 		function(treeNode.value)
-		preOrderTraverseTree(treeNode.rightNode,function)
-		preOrderTraverseTree(treeNode.leftNode,function)
+		preOrderTraverseTree(treeNode.rightNode, function)
+		preOrderTraverseTree(treeNode.leftNode, function)
 	}
 }
-
 
 // PostOrderTraverseTree method
 func (tree *BinarySearchTree) PostOrderTraverseTree(function func(int)) {
@@ -193,10 +189,10 @@ func (tree *BinarySearchTree) PostOrderTraverseTree(function func(int)) {
 	postOrderTraverseTree(tree.rootNode, function)
 }
 
-func postOrderTraverseTree(treeNode *TreeNode, function func(int)) {
+func postOrderTraverseTree(treeNode *BSTTreeNode, function func(int)) {
 	if treeNode != nil {
-		postOrderTraverseTree(treeNode.rightNode,function)
-		postOrderTraverseTree(treeNode.leftNode,function)
+		postOrderTraverseTree(treeNode.rightNode, function)
+		postOrderTraverseTree(treeNode.leftNode, function)
 		function(treeNode.value)
 	}
 }
@@ -211,7 +207,7 @@ func (tree *BinarySearchTree) String() {
 }
 
 // stringify method
-func stringify(treeNode *TreeNode, level int) {
+func stringify(treeNode *BSTTreeNode, level int) {
 	if treeNode != nil {
 		format := ""
 		for i := 0; i < level; i++ {
@@ -228,15 +224,15 @@ func stringify(treeNode *TreeNode, level int) {
 // main method
 func main() {
 	var tree *BinarySearchTree = &BinarySearchTree{}
-	tree.InsertElement(8,8)
-	tree.InsertElement(3,3)
-	tree.InsertElement(10,10)
-	tree.InsertElement(1,1)
-	tree.InsertElement(6,6)
-	tree.InsertElement(12,12)
-	tree.InsertElement(2,2)
-	tree.InsertElement(11,11)
-	tree.InsertElement(4,4)
+	tree.InsertElement(8, 8)
+	tree.InsertElement(3, 3)
+	tree.InsertElement(10, 10)
+	tree.InsertElement(1, 1)
+	tree.InsertElement(6, 6)
+	tree.InsertElement(12, 12)
+	tree.InsertElement(2, 2)
+	tree.InsertElement(11, 11)
+	tree.InsertElement(4, 4)
 	tree.String()
 	tree.RemoveNode(2)
 	tree.String()
