@@ -49,6 +49,26 @@ class Graph():
         # to print DFS traversal
         self.dfsVisit(v, visited)
         print("\n")
+
+    def bfs(self, s):
+        print("starting BFS visiting graph Node")
+        # Mark all the vertices as not visited
+        visited = [False] * (len(self.graph))
+        # Create a queue for BFS
+        queue = []
+        # Mark the source node as
+        # visited and enqueue it
+        queue.append(s)
+        visited[s] = True
+        while queue:
+            s = queue.pop(0)
+            print(s, end=" ")
+
+            for i,_ in enumerate(self.graph):
+                if visited[i] == False:
+                    queue.append(i)
+                    visited[i] = True
+
 V = 5
 graph = Graph(V)
 graph.add_edge(0, 1)
@@ -60,6 +80,9 @@ graph.add_edge(2, 3)
 graph.add_edge(3, 4)
 
 graph.show()
+print("Starting DFS node 1")
 graph.dfs(1)
+print("Starting DFS node 0")
 graph.dfs(0)
-
+print("Starting BFS node 0")
+graph.bfs(2)
