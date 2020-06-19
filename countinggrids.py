@@ -27,6 +27,12 @@ def counting_grids1(sq,n):
             j += 1
     print(sm)
 
+sq = []
+n = int(input())
+for i in range(n):
+    sq.append(list(map(int, input().split())))
+print(counting_grids1(sq,n))
+
 arr = [[0,1,1,0,1],[0,1,1,0,0],[1,0,0,0,0],[0,1,1,0,1],[0,0,0,0,0]]
 print(counting_grids(arr,5))
 print(counting_grids1(arr,5))
