@@ -10,7 +10,7 @@ def find_sum_subarray(arr,x):
     j = 1
     sum = 0
     sum += arr[i]
-    while j<len(arr) -1:
+    while i<len(arr) -1:
         while sum <= x and j < len(arr):
             sum +=arr[j]
             if sum == x:
