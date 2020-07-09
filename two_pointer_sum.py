@@ -25,3 +25,4 @@ def find_sum_subarray(arr,x):
 
 
 print(find_sum_subarray([1,3,2,2,5,1,1,2,3,1,4,5,6,1,1,2,6,2,1,7,6,2],8))
+print(find_sum_subarray([1,3,2,2,5,1,1,2,3,1,4,5,6,1,1,2,6,2,1,7,6,2],8))
