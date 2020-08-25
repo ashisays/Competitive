@@ -29,3 +29,25 @@ def mergeSort(arr):
     return arr
 
 print(mergeSort([1,4,3,2,5,9,8,6,7]))
+
+def binarySearch(arr,value):
+    first = 0
+    last = len(arr)-1
+    found = False
+
+    while first <= last and not found:
+        mid = (first + last) // 2
+        if arr[mid] == value:
+            found = True
+        else:
+            if arr[mid] > value:
+                last = mid -1
+            else:
+                first = mid+1
+    return found
+
+print(binarySearch([1,2,3,4,57,8,9],6))
+print(binarySearch([1,2,3,4,57,8,9],0))
+print(binarySearch([1,2,3,4,57,8,9],1))
+
+
