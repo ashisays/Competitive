@@ -47,6 +47,63 @@ def PerfPerf(s, t):
     return ssi
  
 
+def permutation(s,s1):
+  if len(s)!= len(s1):
+    return False
+  si = 0
+  si1 = 0
+  for i in range(len(s)):
+        b = ord(s[i]) - ord('a')
+        si = si | (1 << b)
+        b1 = ord(s1[i]) - ord('a')
+        si1 = si1 | (1 << b1)
+  return si == si1
+
+def urlify(s):
+  ls = list(s)
+  i = 0
+  while i < len(ls):
+    if ls[i] == " ":
+      j = i+1
+      while j < len(ls):
+        if ls[j] != " ":
+          while i < j:
+            ls[i] = "%20"
+            i +=1
+          break
+        j +=1
+    i +=1
+  return "".join(ls)
+
+def strComp(s):
+  ls = len(s)
+  if ls == 0:
+    return s
+  ch = s[0]
+  c = 1
+  cs = ""
+  for i in range(1,ls):
+    if ch != s[i]:
+      cs +=f"{ch}{c}"
+      c = 1
+      ch = s[i]
+    else:
+      c +=1
+  cs +=f"{ch}{c}"
+
+  if len(cs) > ls:
+    return s
+  return cs
+
+def editAway(s,s1):
+  ss = set(s)
+  ss1 = set(s1)
+  if len(ss - ss1) > 1:
+    return False
+  return True
+
+
+
 if __name__ == '__main__':
     # in1 = ["GeekforGeeks","abc10d","a b c"]
     # for a in in1 :
@@ -56,7 +113,14 @@ if __name__ == '__main__':
     #     print(f"The string {a}, has duplicate characters")
     # s = input()
     # print(checkUp(s))
-    S = "digger"
-    T = "biggerdiagram"
-  
-    print(PerfPerf(S, T))
+    # S = "digger"
+    # T = "biggerdiagram"
+    # print(PerfPerf(S, T))
+    #permutation
+    #print(permutation("ashi","ishac"))
+    ##URLIfy
+    ##print(urlify("Mr Ashish  P    "))
+    # print(strComp("aaabaaacccc"))
+    # print(strComp("abac"))
+    print(editAway("pale","ale"))
+    print(editAway("pale","bake"))
